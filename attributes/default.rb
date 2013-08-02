@@ -1,3 +1,4 @@
+default["apt-cacher-ng"][:secret_file] = "/etc/chef/secrets/apt-cacher-ng"
 default["apt-cacher-ng"][:confdir] = "/etc/apt-cacher-ng"
 
 default["apt-cacher-ng"][:cachedir] = "/var/cache/apt-cacher-ng"

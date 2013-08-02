@@ -19,11 +19,21 @@ node["apt-cacher-ng"][:mappings].each do |mapping|
   end
 end
 
+apt_cacher_ng = if node["apt-cacher-ng"]["encrypted_data_bags"]
+  secret = Chef::EncryptedDataBagItem.load_secret(node["apt-cacher-ng"]["secret_file"])
+  bag = Chef::EncryptedDataBagItem.load("apt-cacher-ng", "default", secret)
+  {user: bag["user"], password: bag["password"]}
+else
+  {user: node["apt-cacher-ng"]["user"], password: node["apt-cacher-ng"]["password"]}
+end
+
 template "#{node["apt-cacher-ng"][:confdir]}/security.conf" do
   source "security.conf.erb"
   owner "apt-cacher-ng"
   group "apt-cacher-ng"
   mode "0600"
   notifies :restart, "service[apt-cacher-ng]", :immediately
+  variables user: apt_cacher_ng[:user],
+    password: apt_cacher_ng[:password]
 end
 

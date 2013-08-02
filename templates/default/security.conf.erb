@@ -9,6 +9,6 @@
 # visit pages with administrative functionality. Format: username:password
 
 #AdminAuth: mooma:moopa
-<% if node["apt-cacher-ng"]["user"] && node["apt-cacher-ng"]["password"] %>
-AdminAuth: <%= node["apt-cacher-ng"]["user"] %>:<%= node["apt-cacher-ng"]["password"] %>
+<% if @user && @password %>
+AdminAuth: <%= @user %>:<%= @password %>
 <% end%>
